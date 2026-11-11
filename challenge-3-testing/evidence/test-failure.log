@@ -1,0 +1,19 @@
+RELEASE RUSH - TEST FAILURE
+
+test_ten_percent_discount: FAIL
+Expected: 180.00
+Actual:   190.00
+
+test_twenty_five_percent_discount: FAIL
+Expected: 60.00
+Actual:   55.00
+
+test_zero_discount: PASS
+test_full_discount: FAIL
+Expected: 0.00
+Actual:   0.00
+
+test_invalid_discount: PASS
+
+Diagnosis required:
+Investigate the percentage calculation.

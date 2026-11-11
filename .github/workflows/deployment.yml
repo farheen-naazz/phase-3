@@ -1,0 +1,61 @@
+name: Phase 3 - Deployment Recovery
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+    paths:
+      - "challenge-4-deployment/**"
+      - ".github/workflows/deployment.yml"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "challenge-4-deployment/**"
+      - ".github/workflows/deployment.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deployment-smoke-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build and start application
+        run: docker compose -f challenge-4-deployment/compose.yaml up --build --detach
+
+      - name: Verify deployment endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          COMPOSE_FILE="challenge-4-deployment/compose.yaml"
+
+          for attempt in {1..20}; do
+
+            if curl --fail --silent --show-error http://127.0.0.1:8080/health; then
+              echo
+              echo "Deployment health check passed."
+              exit 0
+            fi
+
+            sleep 2
+
+          done
+
+          echo "Deployment failed. Container logs follow:"
+          docker compose -f "$COMPOSE_FILE" logs
+          exit 1
+
+      - name: Clean up containers
+        if: always()
+        run: docker compose -f challenge-4-deployment/compose.yaml down --volumes --remove-orphans

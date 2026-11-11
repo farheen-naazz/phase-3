@@ -1,0 +1,18 @@
+RELEASE RUSH - DEPLOYMENT INCIDENT
+
+[INFO] Docker image build completed.
+[INFO] Container creation successful.
+[INFO] Application startup successful.
+[INFO] Inventory API listening on 0.0.0.0:8000.
+[INFO] Container internal health check: HEALTHY.
+
+[INFO] Host smoke test:
+GET http://localhost:8080/health
+
+[ERROR] Connection refused.
+[ERROR] Host cannot reach the inventory API.
+
+Deployment status: FAILED
+
+Investigation required:
+Compare application listener, Dockerfile and Compose port mapping.

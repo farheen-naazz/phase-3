@@ -31,7 +31,8 @@ challenge-4-deployment/
 - Git installed
 - Python 3.10+
 - VS Code or another code editor
-- Docker Engine with Docker Compose for local deployment testing
+- Docker Desktop is optional.
+- Deployment validation is performed using GitHub Actions.
 - Internet access for GitHub Actions
 
 If Docker is unavailable locally, use the supplied GitHub Actions

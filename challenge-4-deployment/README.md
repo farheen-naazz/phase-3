@@ -1,96 +1,89 @@
-# CHALLENGE 4 - DEPLOYMENT RECOVERY
+
+# Challenge 4 - Deployment Recovery
 
 Marks: 20
 
-## INCIDENT
+## Incident
 
-The inventory API container builds and starts successfully.
+The Inventory API container configuration has a port
+mapping error.
 
-The application reports that it is listening on port 8000
+The application listens inside the container on port 8000,
+but users cannot access it through host port 8080.
+
+Your task is to identify and correct the deployment issue.
+
+## Files
+
+- server.py
+- Dockerfile
+- compose.yaml
+- evidence/deployment.log
+
+## Step 1 - Investigate
+
+Inspect server.py and identify the application listening port.
+
+Inspect Dockerfile and identify the exposed port.
+
+Inspect compose.yaml and identify the port mapping.
+
+## Step 2 - Identify the problem
+
+Understand the difference between:
+
+Host port: The port accessed by users.
+
+Container port: The port on which the application listens
 inside the container.
 
-However, users cannot access the application at:
+## Step 3 - Fix the configuration
+
+Correct compose.yaml without changing the application
+listening port.
+
+## Step 4 - Validate using GitHub Actions
+
+Docker Desktop is NOT required.
+
+1. Fork the official challenge repository.
+2. Fix compose.yaml.
+3. Commit and push your change.
+4. Open your GitHub fork.
+5. Navigate to Actions.
+6. Open Phase 3 - Deployment Recovery.
+7. Verify that the deployment smoke test passes.
+
+GitHub Actions will build the Docker image, start the container,
+test the health endpoint and clean up the container.
+
+Expected endpoint:
 
 http://localhost:8080/health
 
-The deployment team reports that the container itself
-is healthy, but the host cannot reach the API.
-
-Investigate the deployment configuration.
-
-## FILES
-
-server.py
-Dockerfile
-compose.yaml
-evidence/deployment.log
-
-## STEP 1 - INSPECT THE APPLICATION
-
-Open server.py.
-
-Identify the address and port on which the application listens.
-
-## STEP 2 - INSPECT THE DOCKERFILE
-
-Check:
-- EXPOSE instruction
-- Application startup command
-- Health check
-
-## STEP 3 - INSPECT DOCKER COMPOSE
-
-Open compose.yaml.
-
-Investigate the ports configuration.
-
-## STEP 4 - IDENTIFY THE ROOT CAUSE
-
-Understand the difference between:
-- Host port
-- Container port
-
-Correct the port mapping without changing the application listener.
-
-## STEP 5 - DEPLOY THE APPLICATION
-
-Run:
-
-docker compose up --build -d
-
-Verify:
-
-curl.exe -i http://localhost:8080/health
-
 Expected response:
 
-HTTP/1.1 200 OK
+HTTP 200 OK
 
 {"status":"ok"}
 
-## STEP 6 - CLEAN UP
+## Optional Local Validation
 
-Run:
+Participants with Docker installed can also run:
+
+docker compose up --build -d
+
+curl.exe -i http://localhost:8080/health
 
 docker compose down
 
-## GITHUB ACTIONS
-
-Push your corrected configuration to your fork.
-
-Open GitHub Actions and verify the deployment smoke test.
-
-## SUBMISSION
+## Submission
 
 Submit:
+
 1. Application listening port.
-2. Incorrect deployment mapping.
-3. Corrected mapping.
-4. Successful HTTP health-check response.
-5. Green deployment workflow evidence.
-6. Commit hash of your fix.
-
-## COMPLETION
-
-FLAG: Not required.
-The working deployment and successful smoke test are your proof.
+2. Incorrect port mapping.
+3. Corrected port mapping.
+4. Root cause explanation.
+5. Successful GitHub Actions run.
+6. Fix commit hash.
